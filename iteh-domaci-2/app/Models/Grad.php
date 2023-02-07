@@ -10,6 +10,13 @@ class Grad extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'naziv',
+        'postanski_broj',
+        'drzava'
+    ];
+
+
     public function magacini(){
         return $this->hasMany(Magacin::class);
     }

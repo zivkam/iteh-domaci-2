@@ -11,6 +11,15 @@ class Magacin extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'tip',
+        'telefon',
+        'ulica',
+        'sef',
+        'prodavnica_id',
+        'grad_id'
+    ];
+
     public function prodavnica(){
         return $this->belongsTo(Prodavnica::class);
     }

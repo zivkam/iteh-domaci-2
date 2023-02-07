@@ -10,6 +10,14 @@ class Prodavnica extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'naziv',
+        'website',
+        'godina',
+        'email'
+    ];
+
+
     public function magacini(){
         return $this->hasMany(Magacin::class);
     }
