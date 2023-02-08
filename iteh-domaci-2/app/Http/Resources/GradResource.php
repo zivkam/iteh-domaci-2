@@ -18,7 +18,7 @@ class GradResource extends JsonResource
             'id' => $this->resource->id,
             'naziv' => $this->resource->naziv,
             'postanski_broj' => $this->resource->postanski_broj,
-            'drzava' => $this->resource->drzavaa
+            'drzava' => $this->resource->drzava
         ];
     }
 }

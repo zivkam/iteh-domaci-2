@@ -20,8 +20,8 @@ class MagacinResource extends JsonResource
             'telefon' => $this->resource->telefon,
             'ulica'=> $this->resource->ulica,
             'sef'=> $this->resource->sef,
-            'prodavnica_id' => new ProdavnicaResource($this->resource->prodavnica_id),
-            'grad_id' => new GradResource($this->resource->grad_id)
+            'prodavnica' => new ProdavnicaResource($this->resource->prodavnica),
+            'grad' => new GradResource($this->resource->grad)
         ];
 
     }
