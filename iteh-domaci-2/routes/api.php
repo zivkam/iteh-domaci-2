@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\ProdavnicaController;
 use App\Http\Controllers\API\MagacinController;
+use App\Http\Controllers\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,12 @@ use App\Http\Controllers\API\MagacinController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::resource('prodavnica',ProdavnicaController::class);
-Route::resource('magacin', MagacinController::class);
+Route::group(['middleware' => ['auth:sanctum']], function () {
+        
+    Route::resource('prodavnica',ProdavnicaController::class);
+    Route::resource('magacin', MagacinController::class);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
