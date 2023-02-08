@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Prodavnica;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProdavnicaResource;
+use Illuminate\Support\Facades\Validator;
 
 class ProdavnicaController extends Controller
 {
@@ -48,9 +49,11 @@ class ProdavnicaController extends Controller
      * @param  \App\Models\Prodavnica  $prodavnica
      * @return \Illuminate\Http\Response
      */
-    public function show(Prodavnica $prodavnica)
+    public function show($id)
     {
-        //
+        $prodavnica = Prodavnica::find($id);
+        return new ProdavnicaResource($prodavnica);
+
     }
 
     /**
@@ -71,10 +74,36 @@ class ProdavnicaController extends Controller
      * @param  \App\Models\Prodavnica  $prodavnica
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Prodavnica $prodavnica)
+    public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'naziv' => 'required|string',
+            'website' => 'required|string',
+            'godina' => 'required|integer',
+            'email' => 'required|email'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $prodavnica = Prodavnica::find($id);
+
+        if ($prodavnica) {
+            $prodavnica->naziv = $request->naziv;
+            $prodavnica->website = $request->website;
+            $prodavnica->godina = $request->godina;
+            $prodavnica->email= $request->email;
+
+
+            $prodavnica->save();
+
+            return response()->json(['Podaci o prodavnici su azurirani!',new ProdavnicaResource($prodavnica)]);
+        } else {
+            return response()->json('Podaci o prodavnici nisu uspesno azurirani!');
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -82,8 +111,15 @@ class ProdavnicaController extends Controller
      * @param  \App\Models\Prodavnica  $prodavnica
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Prodavnica $prodavnica)
+    public function destroy($id)
     {
-        //
+        $prodavnica = Prodavnica::find($id);
+        if ($prodavnica) {
+            $prodavnica->delete();
+            return response()->json(['Prodavnica je obrisana iz baze!', new ProdavnicaResource($prodavnica)]);
+        } else {
+            return response()->json('Brisanje nije izvrseno, proverite da li prodavnica sa ovim ID-em postoji u bazi');
+        }
     }
+
 }
